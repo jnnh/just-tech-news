@@ -5,7 +5,7 @@ const { User } = require('../../models');
 router.get('/', (req, res)=>{
     //Access our User model and run .findAll() method (one of the methods from the sequalize Model Class)
     User.findAll({
-        attributes: { exlcude: ['password'] }
+        attributes: { exclude: ['password'] }
     })
         .then(dbUserData => res.json(dbUserData))
         .catch(err => {
