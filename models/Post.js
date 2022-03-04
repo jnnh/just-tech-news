@@ -2,7 +2,34 @@ const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/connection');
 
 // create our Post model
-class Post extends Model {}
+class Post extends Model {
+    //passes in req.body as body and an object of the models as models
+    static upvote(body, models){
+        return models.Vote.create({
+            user_id: body.user_id,
+            post_id: body.post_id
+        })
+        .then(() => {
+            // then find the post we just voted on
+            return Post.findOne({
+                where: {
+                    id: body.post_id
+                },
+                attributes: [
+                    'id',
+                    'post_url',
+                    'title',
+                    'created_at',
+                    // use raw MySQL aggregate function query to get a count of how many votes the post has and return it under the name `vote count`
+                    [
+                        sequelize.literal('(SELECT COUNT (*) FROM vote WHERE post.id = vote.post_id)'),
+                        'vote_count'
+                    ]
+                ]
+            });
+        });
+    }
+}
 
 // create fields/columns for Post model
 Post.init(
