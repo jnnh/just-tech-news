@@ -29,10 +29,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 // more set up for handlebars
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
-// turn on routes
-app.use(routes);
 // For session
 app.use(session(sess));
+// turn on routes
+app.use(routes);
+
 
 // turn on connection to db and server
 sequelize.sync({ force: false }).then(()=>{
