@@ -1,6 +1,7 @@
 const User = require('./Users');
 const Post = require('./Post');
 const Vote = require('./Votes');
+const Comment = require('./Comments');
 
 //create associations
 User.hasMany(Post, {
@@ -27,6 +28,22 @@ Post.hasMany(Vote, {
     foreginKey: 'post_id'
 });
 
+Comment.belongsTo(User, {
+    foreginKey: 'user_id'
+});
+
+Comment.belongsTo(Post, {
+    foreginKey: 'post_id'
+});
+
+User.hasMany(Comment, {
+    foreginKey: 'user_id'
+});
+
+Post.hasMany(Comment, {
+    foreignKey: 'post_id'
+});
+
 //create Many-to-Many associations
 User.belongsToMany(Post, {
     through: Vote,
@@ -40,4 +57,4 @@ Post.belongsToMany(User, {
     foreginKey: 'post_id'
 });
 
-module.exports = { User, Post, Vote };
+module.exports = { User, Post, Vote, Comment };
